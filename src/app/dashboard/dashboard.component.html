@@ -1,0 +1,96 @@
+<!-- <p>dashboard works!</p> -->
+<!-- <ng-container class="dashboard-container"> -->
+<div class="header">
+  <h2>Dashboard ( For 7 days )</h2>
+  <!-- <div class="ness-logo"></div> -->
+  <!-- <span class="logo">Ness Logo Here</span> -->
+  <img class="logo" src="ness-logo.png" alt="" width="50px" height="50px">
+  <br/><br/>
+</div>
+
+<div class="table-container">
+<table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortPost($event)" 
+class="mat-elevation-z8 demo-table"
+matSort matSortActive="name" matSortDisableClear matSortDirection="desc">
+<ng-container matColumnDef="name">
+  <th mat-header-cell *matHeaderCellDef>Name</th>
+  <td mat-cell *matCellDef="let element">
+    <!-- <mat-icon aria-label="linkedin">linkedin-box</mat-icon> -->
+    <mat-icon svgIcon="linkedin"></mat-icon>
+    <!-- <img class="linkedin-img" src="linkedin-icon.png" alt="" width="7%" height="7%"> -->
+    <span class="name-col">Linkedin</span>
+  </td>
+</ng-container>
+
+<ng-container matColumnDef="post">
+  <th mat-header-cell *matHeaderCellDef>Post</th>
+  <td mat-cell *matCellDef="let element">{{element.post}}</td>m      
+</ng-container>
+
+<ng-container matColumnDef="title">
+  <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
+  <td mat-cell *matCellDef="let element" [title]="element.commentary">{{(element.commentary && element.commentary.length > 85) ? (element.commentary | slice:0:85)+'...' : element.commentary }}</td>
+</ng-container>
+
+<ng-container matColumnDef="createdAt">
+  <th mat-header-cell *matHeaderCellDef>Date</th>
+  <td mat-cell *matCellDef="let element">{{element.createdAt | date: 'dd/MM/YYYY' }}</td>
+</ng-container>
+<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+<tr
+    mat-row
+    (click)="clickedRows.add(row)"
+    [class.demo-row-is-clicked]="clickedRows.has(row)"
+    *matRowDef="let row; columns: displayedColumns;"
+></tr>
+</table>
+
+<mat-paginator [pageSizeOptions]="[1, 2, 5, 10, 20]"
+             (page)="getPageSize($event)"
+             showFirstLastButtons
+             aria-label="Select page of periodic elements">
+</mat-paginator>
+</div>
+
+<!-- </ng-container> -->
+
+<!-- <mat-drawer-container class="example-container" autosize>
+  <mat-drawer #drawer class="example-sidenav" mode="side">
+    <h2 class="sidenav-header">Amplify </h2>
+    <p class="font-decor">Dashboard</p> -->
+    
+    <!-- To be commented -->
+    <!-- <p *ngIf="showFiller">Lorem, ipsum dolor sit amet consectetur.</p>
+    <button (click)="showFiller = !showFiller" mat-raised-button>
+      Toggle extra text
+    </button> -->
+    
+  <!-- </mat-drawer> -->
+  
+  <!-- To be let commented -->
+  <!-- <button type="button" class="material-icons-outlined" (click)="drawer.toggle()"> arrow_circle_left </button> -->
+  
+  <!-- <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="home"></mat-icon>
+
+  <div class="example-sidenav-content">
+    <button type="button" mat-button (click)="drawer.toggle()">
+      Toggle sidenav
+    </button>
+  </div> -->
+
+
+
+
+<!-- </mat-drawer-container> -->
+
+
+  <!-- To be let commented -->
+  <!--<div *ngIf="!clickedRows.size">
+    Clicked rows will be logged here
+  </div>
+  
+  <ul>
+    <li *ngFor="let clickedRow of clickedRows">
+      Clicked on {{clickedRow.name}}
+    </li>
+  </ul> -->
