@@ -3,9 +3,9 @@
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
       [opened]="(isHandset$ | async) === false">
-    <mat-toolbar>Amplify</mat-toolbar>
+    <mat-toolbar><img class="logo" src="./assets/images/amplify-logo.png" alt="" width="85px" height="85px"></mat-toolbar>
     <mat-nav-list>
-      <mat-icon class="sidenav-icon" routerLinkActive="active-link">dashboard</mat-icon><a class="sidenav-text" mat-list-item href="/dashboard">Dashboard</a>
+      <mat-icon class="sidenav-icon" routerLinkActive="active-link">dashboard</mat-icon><a class="sidenav-text" mat-list-item href="/">Dashboard</a>
       <!-- <a mat-list-item href="#">Link 2</a>
       <a mat-list-item href="#">Link 3</a> -->
     </mat-nav-list>

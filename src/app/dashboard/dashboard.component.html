@@ -1,96 +1,102 @@
-<!-- <p>dashboard works!</p> -->
-<!-- <ng-container class="dashboard-container"> -->
+<div *ngIf="isLoggedIn else showSpinner">
 <div class="header">
-  <h2>Dashboard ( For 7 days )</h2>
-  <!-- <div class="ness-logo"></div> -->
-  <!-- <span class="logo">Ness Logo Here</span> -->
-  <img class="logo" src="ness-logo.png" alt="" width="50px" height="50px">
+  <h2>Dashboard (Displays the 10 latest posts from LinkedIn)</h2>
+  <img class="logo" src="./assets/images/ness-logo.png" alt="" width="50px" height="50px">
   <br/><br/>
 </div>
 
+<div *ngIf="message" [ngClass]="{ 'alert': message, 'alert-success': message.type === 'success', 'alert-danger': message.type === 'error' }">{{message.text}}</div>
 <div class="table-container">
-<table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortPost($event)" 
+<table mat-table [dataSource]="dataSource"  
 class="mat-elevation-z8 demo-table"
 matSort matSortActive="name" matSortDisableClear matSortDirection="desc">
-<ng-container matColumnDef="name">
+<!--ng-container matColumnDef="name">
   <th mat-header-cell *matHeaderCellDef>Name</th>
   <td mat-cell *matCellDef="let element">
-    <!-- <mat-icon aria-label="linkedin">linkedin-box</mat-icon> -->
     <mat-icon svgIcon="linkedin"></mat-icon>
-    <!-- <img class="linkedin-img" src="linkedin-icon.png" alt="" width="7%" height="7%"> -->
     <span class="name-col">Linkedin</span>
-  </td>
+  </td> 
+</ng-container-->
+
+<ng-container matColumnDef="name">
+  <th mat-header-cell *matHeaderCellDef>Sr. No.</th>
+  <td mat-cell *matCellDef="let element; let i = index;">{{i+1}}</td>
 </ng-container>
 
-<ng-container matColumnDef="post">
+<!--ng-container matColumnDef="post">
   <th mat-header-cell *matHeaderCellDef>Post</th>
   <td mat-cell *matCellDef="let element">{{element.post}}</td>m      
-</ng-container>
+</ng-container-->
 
 <ng-container matColumnDef="title">
-  <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
-  <td mat-cell *matCellDef="let element" [title]="element.commentary">{{(element.commentary && element.commentary.length > 85) ? (element.commentary | slice:0:85)+'...' : element.commentary }}</td>
+  <th mat-header-cell *matHeaderCellDef>Title</th>
+  <td mat-cell *matCellDef="let element" [title]="element.commentary"><a (click)="openPostInWindow(element.uid)" href="#" class="clickableSpan">{{(element.commentary && element.commentary.length > 75) ? (element.commentary | slice:0:75)+'...' : element.commentary }}</a></td>
 </ng-container>
 
 <ng-container matColumnDef="createdAt">
   <th mat-header-cell *matHeaderCellDef>Date</th>
   <td mat-cell *matCellDef="let element">{{element.createdAt | date: 'dd/MM/YYYY' }}</td>
 </ng-container>
+
+<ng-container matColumnDef="comment">
+  <th mat-header-cell *matHeaderCellDef>Repost with comments</th>
+  <td mat-cell *matCellDef="let element; let i = index">
+    <mat-form-field>
+      <input matInput type="text" [(ngModel)]="comment[i]" id="text_{{element.id}}">
+    </mat-form-field>
+  </td>
+</ng-container>
+
+<ng-container matColumnDef="select">
+  <th mat-header-cell *matHeaderCellDef>
+    <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                  [checked]="selection.hasValue() && isAllSelected()"
+                  [indeterminate]="selection.hasValue() && !isAllSelected()"
+                  labelPosition="after">Like
+    </mat-checkbox>
+  </th>
+  <td mat-cell *matCellDef="let row">
+    <mat-checkbox (click)="$event.stopPropagation()"
+                  (change)="$event ? selection.toggle(row) : null"
+                  [checked]="selection.isSelected(row)">
+    </mat-checkbox>
+  </td>
+</ng-container>
+
+<ng-container matColumnDef="selectShare">
+  <th mat-header-cell *matHeaderCellDef>
+    <mat-checkbox (change)="$event ? toggleAllRowsShare() : null"
+                  [checked]="selectionShare.hasValue() && isAllSelectedShare()"
+                  [indeterminate]="selectionShare.hasValue() && !isAllSelectedShare()"
+                  labelPosition="after">Repost
+    </mat-checkbox>
+  </th>
+  <td mat-cell *matCellDef="let row">
+    <mat-checkbox (click)="$event.stopPropagation()"
+                  (change)="$event ? selectionShare.toggle(row) : null"
+                  [checked]="selectionShare.isSelected(row)">
+    </mat-checkbox>
+  </td>
+</ng-container>
+
 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
 <tr
     mat-row
     (click)="clickedRows.add(row)"
     [class.demo-row-is-clicked]="clickedRows.has(row)"
-    *matRowDef="let row; columns: displayedColumns;"
+    *matRowDef="let row; columns: displayedColumns; let i = dataIndex"
 ></tr>
 </table>
 
-<mat-paginator [pageSizeOptions]="[1, 2, 5, 10, 20]"
-             (page)="getPageSize($event)"
-             showFirstLastButtons
-             aria-label="Select page of periodic elements">
-</mat-paginator>
 </div>
 
-<!-- </ng-container> -->
+<div class="footerSubmitButton">
+  <button class="mat-raised-button" color="primary" type="button" (click)="submitTableAction()">
+  Submit
+  </button>
+</div>
+</div>
 
-<!-- <mat-drawer-container class="example-container" autosize>
-  <mat-drawer #drawer class="example-sidenav" mode="side">
-    <h2 class="sidenav-header">Amplify </h2>
-    <p class="font-decor">Dashboard</p> -->
-    
-    <!-- To be commented -->
-    <!-- <p *ngIf="showFiller">Lorem, ipsum dolor sit amet consectetur.</p>
-    <button (click)="showFiller = !showFiller" mat-raised-button>
-      Toggle extra text
-    </button> -->
-    
-  <!-- </mat-drawer> -->
-  
-  <!-- To be let commented -->
-  <!-- <button type="button" class="material-icons-outlined" (click)="drawer.toggle()"> arrow_circle_left </button> -->
-  
-  <!-- <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="home"></mat-icon>
-
-  <div class="example-sidenav-content">
-    <button type="button" mat-button (click)="drawer.toggle()">
-      Toggle sidenav
-    </button>
-  </div> -->
-
-
-
-
-<!-- </mat-drawer-container> -->
-
-
-  <!-- To be let commented -->
-  <!--<div *ngIf="!clickedRows.size">
-    Clicked rows will be logged here
-  </div>
-  
-  <ul>
-    <li *ngFor="let clickedRow of clickedRows">
-      Clicked on {{clickedRow.name}}
-    </li>
-  </ul> -->
+<ng-template #showSpinner>
+    <mat-progress-spinner class="spinner" mode="indeterminate"></mat-progress-spinner>
+</ng-template>

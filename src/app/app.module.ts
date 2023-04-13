@@ -20,6 +20,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { AlertModule } from './alert/alert.module';
 
 
 @NgModule({
@@ -36,7 +37,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     BrowserAnimationsModule,
     AppRoutingModule,
     DashboardModule,
-    NoopAnimationsModule,
+    // NoopAnimationsModule,
     HttpClientModule,
     LayoutModule,
     MatToolbarModule,
@@ -47,7 +48,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatToolbarModule,
     MatListModule,
     MatSidenavModule,
-    MatTooltipModule
+    MatTooltipModule,
+    AlertModule
     // MatIconModule
     // MatSortModule,
     // MatPaginatorModule

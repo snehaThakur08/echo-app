@@ -7,6 +7,11 @@ import { ActivatedRoute } from '@angular/router';
 import { DashboardService } from './dashboard.service';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { DataSource, SelectionModel } from '@angular/cdk/collections';
+import {MatButtonModule} from '@angular/material/button';
+import { AlertService } from '../alert/alert.service';
+import { AlertComponent } from '../alert/alert.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,12 +20,14 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 
 export class DashboardComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['name', 'post', 'title', 'createdAt'];
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
+  displayedColumns: string[] = ['name', 'title', 'createdAt', 'comment', 'select', 'selectShare'];
+  dataSource = new MatTableDataSource<Post>();
   clickedRows = new Set<Post>();
   code = '';
   state = '';
+  personid = '';
   accessToken = '';
+  loggedInPersonId = '';
   @ViewChild(MatSort)
   sort!: MatSort;
   @ViewChild(MatPaginator)
@@ -29,14 +36,40 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   sidenav!: MatSidenav;
   showFiller = false;
 
+  lessons: Post[] = [];
+  public comment : any = [];
+  
+  selection = new SelectionModel<Post>(true, []);
+  selectionShare = new SelectionModel<Post>(true, []);
+
+  //private alertService: AlertService;
+  private subscription!: Subscription;
+  message: any;
+  isLoggedIn : any;
+  
   constructor(
     private dashboardService: DashboardService,
     private route: ActivatedRoute,
     private matIconRegistry: MatIconRegistry,
-    private domSanitizer: DomSanitizer
+    private domSanitizer: DomSanitizer,
+    private alertService: AlertService
   ) {
     this.matIconRegistry.addSvgIcon("linkedin", this.domSanitizer
-    .bypassSecurityTrustResourceUrl("assets/images/linkedin.svg")); 
+    .bypassSecurityTrustResourceUrl("assets/images/linkedin.svg"));
+    
+    this.isLoggedIn = false;
+    const lcstouid123 = localStorage.getItem('loggedInPersonId') || '';
+    if(lcstouid123 == "") {
+      this.isLoggedIn = false;
+    }
+    else {
+      this.isLoggedIn = true;
+    }
+
+    const lcstouid = localStorage.getItem('loggedInPersonId') || '';
+    if(lcstouid == "") {
+      window.location.href = 'https://amplify.ness.com:8080/api/login';
+    }
   }
 
   ngOnInit(): void {
@@ -44,18 +77,113 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.state = this.route?.snapshot?.queryParams['state'];
     localStorage.setItem('code', this.code);
     localStorage.setItem('state', this.state);
-    console.log('current Route is ', this.code, this.state);
+    //console.log('current Route is ', this.code, this.state);
     const accessCode = localStorage.getItem('code') || '';
-    this.dashboardService.getAccessToken(accessCode).subscribe(res => {
-      console.log('res in Login API', res);
-      localStorage.setItem('accessToken', res['accessToken']);
+    const localStorageLoggedinUserid = localStorage.getItem('loggedInPersonId') || '';
+    this.dashboardService.getAccessToken(accessCode, localStorageLoggedinUserid).subscribe(res => {
+      //console.log('res in Login API', res);
+      let accessTokenResponse = <AccessToken>(res);
+
+      localStorage.setItem('accessToken', accessTokenResponse.access_token);
+      localStorage.setItem('loggedInPersonId', accessTokenResponse.person_id);
     });
     this.accessToken = localStorage.getItem('accessToken') || '';
+    this.loggedInPersonId = localStorage.getItem('loggedInPersonId') || '';
     // this.dashboardService.verifyAccess(this.accessToken).subscribe(res => {
     //   console.log('res to verify access', res);
     // });
     this.getPosts();
+
+    this.subscription = this.alertService.getMessage().subscribe(message => { 
+      this.message = message; 
+  });
   }
+
+  registerSucess:boolean = true;
+
+submitTableAction() {
+    this.message = false ;
+    let selectedPostsLike = [];
+    for (let itemLike of this.selection.selected) {
+      let likeJson = {
+        postId: itemLike.uid,
+        title: itemLike.commentary.substring(0,50)+"..." 
+      };
+      selectedPostsLike.push(likeJson);
+    }
+
+    let selectedPostsShare = [];
+    for (let itemShare of this.selectionShare.selected) {
+      let shareJson = {
+        postId: itemShare.uid,
+        title: itemShare.commentary.substring(0,50)+"...",                                                  
+        comment : (<HTMLInputElement>document.getElementById("text_"+itemShare.id)).value
+      };
+      selectedPostsShare.push(shareJson);
+    }
+
+    console.log(selectedPostsLike);
+    console.log(selectedPostsShare);
+
+    if(selectedPostsLike.length == 0 && selectedPostsShare.length == 0) {
+      this.alertService.error("Atleast one post must be selected",true);
+      setTimeout(() => {
+        this.hideErrSuccDiv()
+      }, 5000);
+    } else {
+      this.dashboardService.postLikeShare(selectedPostsLike, selectedPostsShare, this.loggedInPersonId, this.accessToken).subscribe(res => {
+        console.log('res', res);
+        let likeShareResponse = <LikeShare>(res);
+        if(likeShareResponse.status == "SUCCESS") { 
+          this.alertService.success(likeShareResponse.message,true);
+          this.selection.clear();
+          this.selectionShare.clear();
+          setTimeout(() => {
+            this.hideErrSuccDiv()
+          }, 5000);
+        } else {
+          this.alertService.error(likeShareResponse.message,true);
+          this.selection.clear();
+          this.selectionShare.clear();
+          setTimeout(() => {
+            this.hideErrSuccDiv()
+          }, 5000);
+        }
+      });
+    }
+  }
+
+hideErrSuccDiv () {
+  this.message = true;
+}  
+
+  /** Whether the number of selected elements matches the total number of rows. */
+isAllSelected() {
+  const numSelected = this.selection.selected.length;
+  const numRows = this.dataSource.data.length;
+  return numSelected == numRows;
+}
+
+/** Selects all rows if they are not all selected; otherwise clear selection. */
+toggleAllRows() {
+  this.isAllSelected() ?
+      this.selection.clear() :
+      this.dataSource.data.forEach(row => this.selection.select(row));
+}
+
+ /** Whether the number of selected elements matches the total number of rows. */
+isAllSelectedShare() {
+  const numSelected = this.selectionShare.selected.length;
+  const numRows = this.dataSource.data.length;
+  return numSelected == numRows;
+}
+
+/** Selects all rows if they are not all selected; otherwise clear selection. */
+toggleAllRowsShare() {
+  this.isAllSelectedShare() ?
+      this.selectionShare.clear() :
+      this.dataSource.data.forEach(row => this.selectionShare.select(row));
+}
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
@@ -69,8 +197,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   getPosts(sortState?: Sort) {
     this.dashboardService.getPosts(this.accessToken, sortState).subscribe(res => {
-      console.log('res', res);
-      this.dataSource = res;
+      //console.log('res', res);
+      this.dataSource= new MatTableDataSource(res);
       // this.dataSource.sort = this.sort;
     });
   }
@@ -89,6 +217,16 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     //   this._liveAnnouncer.announce('Sorting cleared');
     // }
   }
+
+  openPostInWindow(postId : string) {
+    let postUrl = "https://www.linkedin.com/feed/update/"+postId;
+    //console.log(postUrl);
+    let w = 500; 
+    let h = 500;
+    let left = Number((screen.width/2)-(w/2));
+    let tops = Number((screen.height/2)-(h/2)); 
+    window.open(postUrl, "PostPage", "height="+h+",width="+w+",top="+tops+",left="+left);
+  }
 }
 
 export interface Post {
@@ -96,12 +234,30 @@ export interface Post {
   post: string;
   title: string;
   createdAt: string;
+  select: string;
+  selectShare : string;
+  uid: string;
+  commentary : string;
+  comment : string;
+  id : number
 }
 
-const ELEMENT_DATA: Post[] = [
-  {name: 'LinkedIn', post: 'Case Study', title: 'Cloud-native OTT is next big thing', createdAt: '07/04/2022'},
-  {name: 'LinkedIn', post: 'Whitepaper', title: 'A robust network security plan', createdAt: '07/04/2022'},
-  {name: 'Twitter', post: 'Anouncement', title: 'Ness is proud to sponsor Vineet Singh who will represent Team India at the XXI World Racquetball Championships in San Luis Potosi, Mexico', createdAt: '08/04/2022'},
-  {name: 'Facebook', post: 'Event Announcement', title: 'Meet our experts in-person at IBC 2022, Amsterdam', createdAt: '01/12/2022'},
-  {name: 'Instagram', post: 'Event Announcement', title: 'Watch the On-demand video to learn about Re-orchestration, the 7th R to Migrating to the Cloud from Peter Meulbroek, Global Head of Cloud and Data at Ness', createdAt: '25/12/2022'}
-];
+export interface AccessToken {
+  code: string;
+  state: string;
+  access_token : string;
+  person_id : string;
+}
+
+export interface LikeShare {
+  statusCode : string;
+  status : string;
+  message : string;
+  comment : string;
+}
+
+export interface LikeJson {
+  postId: string,
+  title: string,
+  comment : string;
+}

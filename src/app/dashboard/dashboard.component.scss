@@ -26,8 +26,28 @@ table.mat-table, .header {
     }
 
     th.mat-column-title {
-      width: 56%;
+      width: 45%;
   }
+
+  th.mat-column-name {
+    width: 7%;
+  }
+
+  th.mat-column-date {
+    width: 10%;
+  }
+
+  th.mat-column-comment {
+    width: 12%;
+  }
+
+  td.mat-column-comment {
+    padding-right: 20px;
+  }
+
+  a.clickableSpan {
+    cursor: pointer;
+  } 
 
   .name-col {
     position: relative;
@@ -110,3 +130,95 @@ table.mat-table, .header {
 //         width: 30%;
 //     }
 // }
+
+.alert-danger {
+  background-color: #f8d7da; /* Red */
+  border-color: #f5c6cb;
+  color: #721c24;
+}
+.alert-success {
+  background-color: #d4edda; 
+  border-color: #c3e6cb;
+  color: #155724; 
+} 
+.alert{
+  //padding: 15px;
+  //color: white;
+  //margin-bottom: 1rem;
+  text-align: center;
+  width: 88.3%;
+  margin-left: 4%;
+  position: relative;
+  padding: .75rem 1.25rem;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+}
+
+.footerSubmitButton{
+  padding-top: 20px;
+  padding-right: 127px;
+  margin-bottom: 15px;
+  text-align: right;
+}
+
+.mat-button.mat-success,
+.mat-stroked-button.mat-success {
+    color: #155724;
+}
+.mat-button.mat-success:hover,
+.mat-stroked-button.mat-success:hover {
+  background-color: #f0fff3;
+}
+
+.mat-raised-button.mat-success,
+.mat-flat-button.mat-success,
+.mat-fab.mat-success,
+.mat-mini-fab.mat-success {
+  color: #f0fff3;
+  background-color: #155724;
+}
+
+.mat-icon-button.mat-success {
+  color:#155724;
+}
+
+.mat-flat-button, .mat-raised-button, .mat-fab, .mat-mini-fab {
+  // Default font and background color when not using any color palette.
+  color: #fafafa;
+  background-color: #3f51b5;
+}
+
+.mat-raised-button:hover {
+  color: #fafafa;
+  background-color: #6877CA;
+}
+
+::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+  background-color: #3f51b5 !important;
+}
+
+::ng-deep .mat-checkbox-ripple .mat-ripple-element {
+  background-color: #3f51b5 !important;
+}
+
+::ng-deep .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+  background-color: #3f51b5 !important;
+}
+
+.mat-progress-bar {
+  .mat-progress-bar-fill::after{
+      background: #007bff;
+  }
+  .mat-progress-bar-buffer{
+      background: white;
+  }
+}
+
+.spinner {
+  position: fixed;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
