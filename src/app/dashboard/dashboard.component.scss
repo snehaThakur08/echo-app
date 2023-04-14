@@ -8,25 +8,26 @@ h2 {
   color: rgb(0, 0, 102);
 }
 
-table.mat-table, .header {
-    width: 92%;
-    margin-left: 4%;
-    h2 {
-        float: left;
-        width: 70%;
-    }
-    .logo {
-        float: right;
-        // width: 10%;
-    }
+table.mat-table,
+.header {
+  width: 92%;
+  margin-left: 4%;
+  h2 {
+    float: left;
+    width: 70%;
+  }
+  .logo {
+    float: right;
+    // width: 10%;
+  }
 
-    .mat-cell {
-      color: rgba(0, 0, 0, 0.54);
-      font-size: 13px;
-    }
+  .mat-cell {
+    color: rgba(0, 0, 0, 0.54);
+    font-size: 13px;
+  }
 
-    th.mat-column-title {
-      width: 45%;
+  th.mat-column-title {
+    width: 45%;
   }
 
   th.mat-column-name {
@@ -47,7 +48,7 @@ table.mat-table, .header {
 
   a.clickableSpan {
     cursor: pointer;
-  } 
+  }
 
   .name-col {
     position: relative;
@@ -62,63 +63,63 @@ table.mat-table, .header {
 }
 
 .ness-logo {
-    background-image:  url(../../assets/images/ness-logo.png);
-    background-repeat: no-repeat;
-    background-position: center-top;
-    // width: 100%; // any width
-    // height: 230px; // any height
+  background-image: url(../../assets/images/ness-logo.png);
+  background-repeat: no-repeat;
+  background-position: center-top;
+  // width: 100%; // any width
+  // height: 230px; // any height
 }
 
 .linkedin-img {
-    background-image:  url(../../assets/images/linkedin-icon.png);
-    background-repeat: no-repeat;
-    background-position: center-top;
+  background-image: url(../../assets/images/linkedin-icon.png);
+  background-repeat: no-repeat;
+  background-position: center-top;
 }
 
 .example-container {
-    width: 100%;
-    height: 100%;
-    border: 1px solid rgba(0, 0, 0, 0.5);
-  }
-  
-  .example-sidenav-content {
-    display: flex;
-    height: 20%;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .example-sidenav {
-    padding: 20px;
-  }
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
 
-  .mat-paginator {
-    display: inline;
-    .mat-paginator-container {
-      padding: 0 34px;
-    }
-  }
+.example-sidenav-content {
+  display: flex;
+  height: 20%;
+  align-items: center;
+  justify-content: center;
+}
 
-  .mat-drawer {
-    background-color: navy;
-  }
+.example-sidenav {
+  padding: 20px;
+}
 
-  .sidenav-header {
-    color: white;
-    font-weight: bold;
-    font-size: 20px;
-  }
-
-  .font-decor {
-    color: lightgreen;
-    font-weight: bold;
-    font-size: 12px;
-  }
-
+.mat-paginator {
+  display: inline;
   .mat-paginator-container {
-    width: 90% !important;
-    padding: 0 120px !important;
+    padding: 0 34px;
   }
+}
+
+.mat-drawer {
+  background-color: navy;
+}
+
+.sidenav-header {
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.font-decor {
+  color: lightgreen;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.mat-paginator-container {
+  width: 90% !important;
+  padding: 0 120px !important;
+}
 
 // .header {
 //     width: 100%;
@@ -137,11 +138,11 @@ table.mat-table, .header {
   color: #721c24;
 }
 .alert-success {
-  background-color: #d4edda; 
+  background-color: #d4edda;
   border-color: #c3e6cb;
-  color: #155724; 
-} 
-.alert{
+  color: #155724;
+}
+.alert {
   //padding: 15px;
   //color: white;
   //margin-bottom: 1rem;
@@ -149,12 +150,12 @@ table.mat-table, .header {
   width: 88.3%;
   margin-left: 4%;
   position: relative;
-  padding: .75rem 1.25rem;
+  padding: 0.75rem 1.25rem;
   border: 1px solid transparent;
-  border-radius: .25rem;
+  border-radius: 0.25rem;
 }
 
-.footerSubmitButton{
+.footerSubmitButton {
   padding-top: 20px;
   padding-right: 127px;
   margin-bottom: 15px;
@@ -163,7 +164,7 @@ table.mat-table, .header {
 
 .mat-button.mat-success,
 .mat-stroked-button.mat-success {
-    color: #155724;
+  color: #155724;
 }
 .mat-button.mat-success:hover,
 .mat-stroked-button.mat-success:hover {
@@ -179,10 +180,13 @@ table.mat-table, .header {
 }
 
 .mat-icon-button.mat-success {
-  color:#155724;
+  color: #155724;
 }
 
-.mat-flat-button, .mat-raised-button, .mat-fab, .mat-mini-fab {
+.mat-flat-button,
+.mat-raised-button,
+.mat-fab,
+.mat-mini-fab {
   // Default font and background color when not using any color palette.
   color: #fafafa;
   background-color: #3f51b5;
@@ -190,7 +194,7 @@ table.mat-table, .header {
 
 .mat-raised-button:hover {
   color: #fafafa;
-  background-color: #6877CA;
+  background-color: #6877ca;
 }
 
 ::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
@@ -206,11 +210,11 @@ table.mat-table, .header {
 }
 
 .mat-progress-bar {
-  .mat-progress-bar-fill::after{
-      background: #007bff;
+  .mat-progress-bar-fill::after {
+    background: #007bff;
   }
-  .mat-progress-bar-buffer{
-      background: white;
+  .mat-progress-bar-buffer {
+    background: white;
   }
 }
 
@@ -221,4 +225,82 @@ table.mat-table, .header {
   left: 0;
   bottom: 0;
   right: 0;
+}
+
+.like-dislike-btn {
+  display: none;
+}
+
+@media only screen and (max-width: 768px) {
+  .footerSubmitButton {
+    padding-top: 20px;
+    padding-right: 0;
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .alert {
+    margin: 0;
+    padding-left: 4%;
+    padding-right: 4%;
+    width: 100%;
+  }
+  .table-container .mat-table {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+
+    // ::ng-deep {
+    //   thead {
+    //     display: none;
+    //   }
+    // }
+
+    .mat-header-cell:nth-child(1),
+    .mat-header-cell:nth-child(2),
+    .mat-header-cell:nth-child(3),
+    .mat-header-cell:nth-child(4) {
+      display: none;
+    }
+
+    .mat-checkbox {
+      padding-left: 15px;
+      display: block;
+    }
+
+    // .mat-cell {
+    //   color: blue;
+    // }
+
+    .like-dislike-btn {
+      display: block;
+    }
+
+    .mat-column-comment .mat-form-field {
+      width: 100%;
+    }
+
+    .mat-row {
+      display: flex;
+      flex-direction: column;
+      height: auto;
+      border-top: 1px solid rgba(0, 0, 0, 0.12);
+      padding: 15px;
+
+      .mat-cell {
+        border: 0;
+        padding: 0;
+      }
+
+      .mat-column-createdAt {
+        padding-top: 15px;
+      }
+
+      .mat-column-name {
+        display: none;
+      }
+    }
+  }
 }
